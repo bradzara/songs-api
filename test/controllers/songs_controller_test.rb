@@ -12,7 +12,16 @@ class SongsControllerTest < ActionDispatch::IntegrationTest
 
   test "create" do
     assert_difference "Song.count", 1 do
-      post "/songs.json", params: { title: "The Star Room", album: "Watching Movies with the Sound Off", artist: "Mac Miller", year: 2013}
+      post "/songs.json", params: { title: "The Star Room", album: "Watching Movies with the Sound Off", artist: "Mac Miller", year: 2013 }
       assert_response 200
+    end
+  end
+
+  test "show" do
+    get "/songs/#{Song.first.id}.json"
+    assert_response 200
+
+    data = JSON.parse(response.body)
+    assert_equal ["title", "album", "artist", "year"], data.keys
   end
 end
